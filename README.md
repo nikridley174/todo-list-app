@@ -1,4 +1,4 @@
-# todo-list-app
+# To-Do-List-App
 A clean and responsive To-Do List web app built with HTML, CSS, and vanilla JavaScript. Features task persistence with localStorage.
 
 # Features
