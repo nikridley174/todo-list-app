@@ -1,3 +1,5 @@
+// script.js - Fully fixed version
+
 const taskInput = document.getElementById('task-input');
 const addBtn = document.getElementById('add-btn');
 const taskList = document.getElementById('task-list');
@@ -9,24 +11,23 @@ const themeToggle = document.getElementById('theme-toggle');
 let currentFilter = 'all';
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-// Theme handling
+// Theme
 function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);   // Fixed typo: data-them → data-theme
+    document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
-    themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    if (themeToggle) themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
 }
 
 const savedTheme = localStorage.getItem('theme') ||
     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 setTheme(savedTheme);
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
+themeToggle?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
 });
 
-// Render tasks
+// Render
 function renderTasks() {
     taskList.innerHTML = '';
 
@@ -38,7 +39,7 @@ function renderTasks() {
 
     filteredTasks.forEach((task, index) => {
         const li = document.createElement('li');
-        li.className = `task-item ${task.completed ? 'completed' : ''}`;   // Fixed template literal
+        li.className = `task-item ${task.completed ? 'completed' : ''}`;
 
         li.innerHTML = `
             <input type="checkbox" ${task.completed ? 'checked' : ''}>
@@ -46,13 +47,11 @@ function renderTasks() {
             <button class="delete-btn" aria-label="Delete task">×</button>
         `;
 
-        // Checkbox toggle
         li.querySelector('input').addEventListener('change', () => {
             tasks[index].completed = !tasks[index].completed;
             saveAndRender();
         });
 
-        // Delete task
         li.querySelector('.delete-btn').addEventListener('click', () => {
             tasks.splice(index, 1);
             saveAndRender();
@@ -64,33 +63,26 @@ function renderTasks() {
     updateTaskCount();
 }
 
-// Update task count
 function updateTaskCount() {
-    const activeCount = tasks.filter(t => !t.completed).length;   // Fixed: lenth → length
-    taskCount.textContent = `${activeCount} task${activeCount !== 1 ? 's' : ''} left`;   // Fixed template literal
+    const activeCount = tasks.filter(t => !t.completed).length;
+    taskCount.textContent = `${activeCount} task${activeCount !== 1 ? 's' : ''} left`;
 }
 
-// Save and re-render
 function saveAndRender() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     renderTasks();
 }
 
-// Add new task
 function addTask() {
     const text = taskInput.value.trim();
     if (text === '') return;
 
-    tasks.push({
-        text: text,
-        completed: false
-    });
-
+    tasks.push({ text, completed: false });
     taskInput.value = '';
     saveAndRender();
 }
 
-// Filter handling
+// Filters
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
@@ -101,16 +93,18 @@ filterBtns.forEach(btn => {
 });
 
 // Event listeners
-addBtn.addEventListener('click', addTask);
-
-taskInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') addTask();
-});
-
-clearCompletedBtn.addEventListener('click', () => {
-    tasks = tasks.filter(task => !task.completed);
-    saveAndRender();
-});
+if (addBtn) addBtn.addEventListener('click', addTask);
+if (taskInput) {
+    taskInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addTask();
+    });
+}
+if (clearCompletedBtn) {
+    clearCompletedBtn.addEventListener('click', () => {
+        tasks = tasks.filter(task => !task.completed);
+        saveAndRender();
+    });
+}
 
 // Initial render
 renderTasks();
