@@ -1,34 +1,37 @@
-<!DOCTTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
+    <title>Todo List • Nik Ridley</title>
     <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <h1>My Todo List</h1>
+        <header>
+            <h1>📋 My Todo List</h1>
+            <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        </header>
 
-      <div class="input-area">
-        <input type="text" id="task-input" placeholder="Add a new task...">
-        <button id="add-btn">Add</button>
-      </div>
+        <div class="input-area">
+            <input type="text" id="task-input" placeholder="What needs to be done?" maxlength="100">
+            <button id="add-btn">Add Task</button>
+        </div>
 
-      <div class="filters">
-        <button data-filter="all" class="active">All</button>
-        <button data-filter="active">Active</button>
-        <button data-filter="completed">Completed</button>
-      </div>
+        <div class="filters">
+            <button data-filter="all" class="active">All</button>
+            <button data-filter="active">Active</button>
+            <button data-filter="completed">Completed</button>
+        </div>
 
-      <ul id="task-list"></ul>
+        <ul id="task-list" class="task-list"></ul>
 
-      <div class="stats">
-        <span id="task-count">0 tasks</span>
-        <button id="clear-completed">Clear Completed</button>
-      </div>
+        <div class="footer">
+            <span id="task-count">0 tasks left</span>
+            <button id="clear-completed">Clear Completed</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
